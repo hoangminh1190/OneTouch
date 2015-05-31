@@ -6,14 +6,15 @@
     android:weightSum="9"
     tools:context="com.example.chatheads.MainActivity">
 
+
     <Button
         android:id="@+id/startService"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp"
+        android:layout_weight="1"
         android:onClick="enableAdmin"
         android:text="Enable admin" />
 
@@ -37,9 +38,9 @@
         android:id="@+id/changeIcon"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_alignLeft="@+id/lock"
         android:layout_below="@+id/lock"
+        android:layout_weight="1"
         android:onClick="changeIcon"
         android:text="Change icon" />
 
@@ -47,27 +48,27 @@
         android:id="@+id/oneTouch"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_alignLeft="@+id/changeIcon"
         android:layout_below="@+id/changeIcon"
+        android:layout_weight="1"
         android:onClick="oneTouch"
         android:text="oneTouch" />
     <Button
         android:id="@+id/setTitle"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_alignLeft="@+id/oneTouch"
         android:layout_below="@+id/oneTouch"
+        android:layout_weight="1"
         android:onClick="setTitle"
         android:text="setTitle" />
     <Button
         android:id="@+id/setMsg"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_alignLeft="@+id/setTitle"
         android:layout_below="@+id/setTitle"
+        android:layout_weight="1"
         android:onClick="setMsg"
         android:text="setMsg" />
     <Button

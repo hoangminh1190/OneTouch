@@ -17,8 +17,13 @@ public class Utils {
         return sharedPreferences.getInt(key, 0);
     }
 
-    public static void putPrefValue(Context context, String key, Object value) {
+    public static boolean getPrefBoolean(Context context, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.PREF_FILE_NAME, Context.MODE_MULTI_PROCESS);
+        return sharedPreferences.getBoolean(key, false);
+    }
+
+    public static void putPrefValue(Context context, String key, Object value) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (value instanceof Integer)
             editor.putInt(key, Integer.parseInt(value.toString()));

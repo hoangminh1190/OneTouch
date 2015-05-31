@@ -16,11 +16,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import android.content.Context;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.m2team.onetouch.Constant;
 import com.m2team.onetouch.R;
 import com.m2team.onetouch.Utils;
@@ -29,7 +33,7 @@ import com.m2team.onetouch.core.OverlayService;
 import com.m2team.onetouch.core.OverlayView;
 
 
-public class OneTouchOverlayView extends OverlayView {
+public class MultiTouchOverlayView extends OverlayView {
 
     private ImageView icon;
     private int initialX;
@@ -39,9 +43,11 @@ public class OneTouchOverlayView extends OverlayView {
     private int actionType;
     private long timeTouchDown;
     private int resId;
+    private Context mContext;
 
-    public OneTouchOverlayView(OverlayService service) {
-        super(service, R.layout.overlay, 1);
+    public MultiTouchOverlayView(OverlayService service) {
+        super(service, R.layout.multi_touch, 1);
+        mContext = getContext();
         layoutParams.x = 0;
         layoutParams.y = 100;
         actionType = -1;
@@ -53,13 +59,20 @@ public class OneTouchOverlayView extends OverlayView {
 
     @Override
     protected void onInflateView() {
-        icon = (ImageView) this.findViewById(R.id.icon);
-        resId = Utils.getPrefInt(getContext(), Constant.ICON_ID_NOTI);
-        if (resId == 0) {
-            resId = R.drawable.ic_star;
-            Utils.putPrefValue(getContext(), Constant.ICON_ID_NOTI, resId);
+        ContextThemeWrapper context = new ContextThemeWrapper(getService(), R.style.MenuButtonsSmall);
+        FloatingActionMenu menu = new FloatingActionMenu(new ContextThemeWrapper(getService(), R.style.FloatingMenuParent));
+        for (int i = 0; i <= Constant.MAX_FLOATING_BUTTON; i++) {
+            FloatingActionButton actionButton = new FloatingActionButton(context);
+            actionButton.setTag(i);
+            actionButton.setLabelText(i + "");
+            actionButton.setButtonSize(FloatingActionButton.SIZE_MINI);
+            actionButton.setOnClickListener(new FloatingButtonListener(getContext(), menu));
+            menu.addMenuButton(actionButton);
         }
-        icon.setImageResource(resId);
+        menu.showMenuButton(true);
+        menu.setIconAnimated(true);
+        super.addView(menu);
+        refresh();
     }
 
     @Override
@@ -87,6 +100,7 @@ public class OneTouchOverlayView extends OverlayView {
 
     @Override
     protected void onTouchEvent_Move(MotionEvent event) {
+        Log.e("hm", "move");
         layoutParams.x = initialX + (int) (event.getRawX() - initialTouchX);
         layoutParams.y = initialY + (int) (event.getRawY() - initialTouchY);
         refreshLayout();
@@ -94,6 +108,7 @@ public class OneTouchOverlayView extends OverlayView {
 
     @Override
     protected void onTouchEvent_Press(MotionEvent event) {
+        Log.e("hm", "down");
         initialX = layoutParams.x;
         initialY = layoutParams.y;
         initialTouchX = event.getRawX();
@@ -110,6 +125,7 @@ public class OneTouchOverlayView extends OverlayView {
 
     @Override
     public boolean onTouchEvent_LongPress() {
+        Log.e("hm", "long");
         Utils.putPrefValue(getService(), Constant.MSG_NOTI, getContext().getString(R.string.show_again));
         getService().moveToForeground(1, true);
         unload();
@@ -119,7 +135,7 @@ public class OneTouchOverlayView extends OverlayView {
 
     public void changeIcon(int resourceId) {
         icon.setImageResource(resourceId);
-        Utils.putPrefValue(getContext(), Constant.ICON_ID_NOTI, resourceId);
+        Utils.putPrefValue(mContext, Constant.ICON_ID_NOTI, resourceId);
     }
 
     public void setActionType(int actionType) {
@@ -129,7 +145,7 @@ public class OneTouchOverlayView extends OverlayView {
     public void executeOneTouch() {
         switch (actionType) {
             case 0:
-                LockPhoneFunction function = new LockPhoneFunction(getContext());
+                LockPhoneFunction function = new LockPhoneFunction(mContext);
                 function.lock();
                 break;
             default:
