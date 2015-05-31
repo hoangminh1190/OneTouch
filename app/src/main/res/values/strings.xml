@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">One Touch</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_notification">Title noti</string>
+    <string name="message_notification">Message noti</string>
+    <string name="sample_device_admin">Sample</string>
+    <string name="sample_device_admin_description">Desc</string>
+    <string name="show_again">Click here to show me again</string>
+    <string name="show_setting">Click here to setting</string>
+</resources>
