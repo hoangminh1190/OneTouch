@@ -23,10 +23,8 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.m2team.onetouch.Constant;
-import com.m2team.onetouch.MainActivity;
 import com.m2team.onetouch.R;
-import com.m2team.onetouch.Utils;
+import com.m2team.onetouch.SettingActivity;
 import com.m2team.onetouch.core.OverlayService;
 
 
@@ -35,7 +33,6 @@ public class OneTouchService extends OverlayService {
     public static OneTouchService instance;
 
     private OneTouchOverlayView overlayView;
-    private MultiTouchOverlayView multiTouchOverlayView;
 
     static public void stop() {
         if (instance != null) {
@@ -47,9 +44,6 @@ public class OneTouchService extends OverlayService {
         if (instance != null && instance.overlayView != null) {
             Log.e("hm", "changeIcon");
             instance.overlayView.changeIcon(resId);
-        } else if (instance != null && instance.multiTouchOverlayView != null) {
-            Log.e("hm", "changeIcon");
-            instance.multiTouchOverlayView.changeIcon(resId);
         }
     }
 
@@ -57,9 +51,6 @@ public class OneTouchService extends OverlayService {
         if (instance != null && instance.overlayView != null) {
             Log.e("hm", "setOneTouch: " + type);
             instance.overlayView.setActionType(type);
-        } else if (instance != null && instance.multiTouchOverlayView != null) {
-            Log.e("hm", "setOneTouch: " + type);
-            instance.multiTouchOverlayView.setActionType(type);
         }
     }
 
@@ -67,9 +58,13 @@ public class OneTouchService extends OverlayService {
         if (instance != null && instance.overlayView != null) {
             Log.e("hm", "showAgain");
             instance.overlayView.show();
-        } else if (instance != null && instance.multiTouchOverlayView != null) {
-            Log.e("hm", "showAgain");
-            instance.multiTouchOverlayView.show();
+        }
+    }
+
+    public static void changeIconSize(int size, int type) {
+        if (instance != null && instance.overlayView != null) {
+            Log.e("hm", "changeIconSize");
+            instance.overlayView.changeIconSize(size, type);
         }
     }
 
@@ -77,11 +72,9 @@ public class OneTouchService extends OverlayService {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        boolean isOneTouch = Utils.getPrefBoolean(getApplicationContext(), Constant.IS_ONE_TOUCH);
-        if (isOneTouch)
-            overlayView = new OneTouchOverlayView(this);
-        else
-            multiTouchOverlayView = new MultiTouchOverlayView(this);
+        //boolean isOneTouch = Utils.getPrefBoolean(getApplicationContext(), Constant.IS_ONE_TOUCH);
+        overlayView = new OneTouchOverlayView(this);
+
     }
 
     @Override
@@ -90,8 +83,6 @@ public class OneTouchService extends OverlayService {
 
         if (overlayView != null) {
             overlayView.destroy();
-        } else if (multiTouchOverlayView != null) {
-            multiTouchOverlayView.destroy();
         }
     }
 
@@ -114,7 +105,7 @@ public class OneTouchService extends OverlayService {
             pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             Log.e("hm", "noti activity");
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, SettingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }

@@ -1,5 +1,7 @@
+/*
 package com.m2team.onetouch.main;
 
+*/
 /*
 Copyright 2011 jawsware international
 
@@ -14,7 +16,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+*//*
+
 
 import android.content.Context;
 import android.util.Log;
@@ -83,7 +86,8 @@ public class MultiTouchOverlayView extends OverlayView {
     protected void onTouchEvent_Up(MotionEvent event) {
         if (System.currentTimeMillis() - timeTouchDown > 300) {
             Log.e("hm", "DRAGGGGGGGGGGGGGGGGGGGGGG");
-            /*float rawX = event.getRawX();
+            */
+/*float rawX = event.getRawX();
             float rawY = event.getRawY();
             int[] location = new int[2];
             getLocationOnScreen(location);
@@ -91,7 +95,8 @@ public class MultiTouchOverlayView extends OverlayView {
             int topOnScreen = getTopOnScreen();
             layoutParams.x = topOnScreen;
             layoutParams.y = leftOnScreen;
-            refreshLayout();*/
+            refreshLayout();*//*
+
         } else {
             Log.e("hm", "CLICKED");
             executeOneTouch();
@@ -156,3 +161,4 @@ public class MultiTouchOverlayView extends OverlayView {
 
 
 }
+*/

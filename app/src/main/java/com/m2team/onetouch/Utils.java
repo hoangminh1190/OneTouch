@@ -2,6 +2,8 @@ package com.m2team.onetouch;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 /**
  * Created by Administrator on 30/05/2015.
@@ -30,5 +32,12 @@ public class Utils {
         else if (value instanceof String)
             editor.putString(key, value.toString());
         editor.commit();
+    }
+
+    public static int convertPixelsToDp(float px, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / (metrics.densityDpi / 160f);
+        return Math.round(dp);
     }
 }

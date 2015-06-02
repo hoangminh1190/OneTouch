@@ -1,9 +1,8 @@
 package com.m2team.onetouch;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +11,12 @@ import com.m2team.onetouch.core.LockPhoneFunction;
 import com.m2team.onetouch.main.OneTouchService;
 
 
-public class MainActivity extends ActionBarActivity {
+public class SettingActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_settings);
     }
 
     @Override
@@ -41,24 +40,8 @@ public class MainActivity extends ActionBarActivity {
         startService(new Intent(this, OneTouchService.class));
     }
 
-    public void changeIcon(View v) {
-        OneTouchService.changeIcon(R.drawable.ic_cafe);
-    }
-
     public void oneTouch(View v) {
         OneTouchService.setOneTouch(0);
-    }
-
-    public void setTitle(View v) {
-       Utils.putPrefValue(getApplicationContext(), Constant.TITLE_NOTI, "HM");
-
-    }
-    public void setMsg(View v) {
-        Utils.putPrefValue(getApplicationContext(), Constant.MSG_NOTI, "Hello Vietnam");
-    }
-
-    public void setIconId(View v) {
-        Utils.putPrefValue(getApplicationContext(), Constant.ICON_ID_NOTI, R.drawable.ic_cafe);
     }
 
     public void exit(View v) {

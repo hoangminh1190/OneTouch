@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="4">
+
+    <com.rey.material.widget.Button
+        android:id="@+id/changeIcon"
+        style="@style/FlatButtonRippleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="changeIcon"
+        android:text="Change icon"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#FF000000" />
+
+    <com.rey.material.widget.Button
+        android:id="@+id/setTitle"
+        style="@style/FlatButtonRippleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="setTitle"
+
+        android:text="Change title notification"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#FF000000" />
+
+    <com.rey.material.widget.Button
+        android:id="@+id/setMsg"
+        style="@style/FlatButtonRippleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="setMsg"
+        android:text="Change message notification"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#FF000000" />
+
+    <com.rey.material.widget.Button
+        android:id="@+id/setIconId"
+        style="@style/FlatButtonRippleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="setIconId"
+        android:text="Change icon notification"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#FF000000" />
+</LinearLayout>

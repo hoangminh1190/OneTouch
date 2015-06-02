@@ -10,6 +10,10 @@
         android:layout_height="64dp"
         />
 
+    <SurfaceView
+        android:id="@+id/preview_flashlight"
+        android:layout_width="1dp"
+        android:layout_height="1dp" />
     <!--<com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu4"
         android:layout_width="wrap_content"

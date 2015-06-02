@@ -8,6 +8,7 @@ public class Constant {
     public static final String TITLE_NOTI = "TITLE_NOTI";
     public static final String MSG_NOTI = "MSG_NOTI";
     public static final String ICON_ID_NOTI = "ICON_ID_NOTI";
-    public static final int MAX_FLOATING_BUTTON = 5;
-    public static final String IS_ONE_TOUCH = "IS_ONE_TOUCH";
+    public static String SIZE = "size";
+    public static String OPACITY = "opacity";
+    public static String ICON_ID = "icon_id";
 }

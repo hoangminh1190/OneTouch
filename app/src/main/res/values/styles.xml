@@ -5,15 +5,27 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="MenuButtonsSmall">
-        <item name="fab_size">mini</item>
-        <item name="fab_colorNormal">#1565C0</item>
-        <item name="fab_colorPressed">#2272CD</item>
-        <item name="fab_colorRipple">#62B2FF</item>
+    <style name="InOutColorsCircularProgressDrawableStyle" parent="Material.Drawable.CircularProgress">
+        <item name="cpd_inAnimDuration">800</item>
+        <item name="cpd_inStepPercent">0.5</item>
+        <item name="cpd_inStepColors">@array/in_colors</item>
+        <item name="cpd_outAnimDuration">400</item>
+        <item name="cpd_strokeColors">@array/progress_colors</item>
     </style>
 
-    <style name="FloatingMenuParent">
-        <item name="menu_icon">@drawable/ic_star</item>
+    <style name="FlatWaveColorButtonRippleStyle" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="android:background">@null</item>
+        <item name="rd_rippleColor">#902DA0FF</item>
+        <item name="rd_cornerRadius">4dp</item>
     </style>
 
+    <style name="FlatWaveButtonRippleStyle" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="android:background">@null</item>
+        <item name="rd_cornerRadius">4dp</item>
+    </style>
+
+    <style name="FlatButtonRippleStyle" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="android:background">@null</item>
+        <item name="rd_cornerRadius">4dp</item>
+    </style>
 </resources>
