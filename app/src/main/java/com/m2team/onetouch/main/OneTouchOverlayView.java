@@ -123,14 +123,15 @@ public class OneTouchOverlayView extends OverlayView {
 
     @Override
     protected void show() {
-        //Utils.putPrefValue(getService(), Constant.MSG_NOTI, "Click here to setting");
-        //getService().moveToForeground(1, !showNotificationHidden());
+        Utils.putPrefValue(getService(), Constant.MSG_NOTI, Utils.getPrefString(getContext(), Constant.MSG_HIDDEN_NOTI));
+        getService().moveToForeground(1, !showNotificationHidden());
         load();
     }
 
     @Override
     public boolean onTouchEvent_LongPress() {
         Applog.e("longggggggggg");
+        Utils.putPrefValue(getService(), Constant.MSG_HIDDEN_NOTI, Utils.getPrefString(getContext(), Constant.MSG_NOTI));
         Utils.putPrefValue(getService(), Constant.MSG_NOTI, getContext().getString(R.string.show_again));
         getService().moveToForeground(1, true);
         unload();
