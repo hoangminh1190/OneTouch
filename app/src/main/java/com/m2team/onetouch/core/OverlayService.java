@@ -18,12 +18,9 @@ limitations under the License.
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.m2team.onetouch.Constant;
 import com.m2team.onetouch.R;
@@ -41,10 +38,9 @@ public class OverlayService extends android.app.Service {
     }
 
     public void moveToForeground(int id, boolean cancelNotification) {
-        Log.e("hm", "moveFore");
         String title = Utils.getPrefString(getApplicationContext(), Constant.TITLE_NOTI);
         String msg = Utils.getPrefString(getApplicationContext(), Constant.MSG_NOTI);
-        int iconId = Utils.getPrefInt(getApplicationContext(), Constant.ICON_ID_NOTI);
+        int iconId = Utils.getPrefInt(getApplicationContext(), Constant.ICON_ID);
         if (iconId == 0) iconId = R.drawable.ic_star;
         if (TextUtils.isEmpty(title)) title = "One Touch";
         if (TextUtils.isEmpty(msg)) msg = getApplicationContext().getString(R.string.show_setting);
@@ -52,18 +48,13 @@ public class OverlayService extends android.app.Service {
     }
 
     public void moveToForeground(int id, Notification notification, boolean cancelNotification) {
-        Log.e("hm", this.foreground == true ? "true" : "false");
-        Log.e("hm", notification != null ? "!null" : "null");
-        Log.e("hm", "id: " + id + " ##this.id: " + this.id);
         if (!this.foreground && notification != null) {
-            Log.e("hm", "haha");
             this.foreground = true;
             this.id = id;
             this.cancelNotification = cancelNotification;
 
             super.startForeground(id, notification);
         } else if (id > 0 && notification != null) {
-            Log.e("hm", "hehe");
             this.id = id;
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(id, notification);
         }

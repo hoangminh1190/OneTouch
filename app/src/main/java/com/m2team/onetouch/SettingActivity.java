@@ -41,7 +41,15 @@ public class SettingActivity extends ActionBarActivity {
     }
 
     public void oneTouch(View v) {
-        OneTouchService.setOneTouch(0);
+        switch (v.getId()) {
+            case R.id.oneTouch:
+                OneTouchService.setOneTouch(0);
+                break;
+            case R.id.flashlight:
+                OneTouchService.setOneTouch(1);
+                break;
+        }
+
     }
 
     public void exit(View v) {

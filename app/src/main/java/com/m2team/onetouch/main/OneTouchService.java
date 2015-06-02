@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.m2team.onetouch.Applog;
 import com.m2team.onetouch.R;
 import com.m2team.onetouch.SettingActivity;
 import com.m2team.onetouch.core.OverlayService;
@@ -89,7 +90,7 @@ public class OneTouchService extends OverlayService {
     @Override
     protected Notification foregroundNotification(int notificationId, int iconId, String title, String msg) {
         int state = msg.equals(getApplicationContext().getString(R.string.show_again)) ? 0 : 1;
-        Log.e("hm", String.valueOf(state));
+        Applog.e("STATEEEEEEEEE: " + state);
         PendingIntent pendingIntent = notificationIntent(state);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
         builder.setContentText(msg).setContentTitle(title).setVibrate(new long[]{-1, 0, 1}).setSmallIcon(iconId);
@@ -100,11 +101,9 @@ public class OneTouchService extends OverlayService {
     private PendingIntent notificationIntent(int state) {
         PendingIntent pendingIntent;
         if (state == 0) {
-            Log.e("hm", "noti service");
             Intent intent = new Intent(this, OneTouchReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            Log.e("hm", "noti activity");
             Intent intent = new Intent(this, SettingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

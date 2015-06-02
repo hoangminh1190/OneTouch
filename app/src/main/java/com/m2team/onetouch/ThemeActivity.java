@@ -19,6 +19,7 @@ import com.m2team.onetouch.main.adapter.CustomGridAdapter;
 import com.rey.material.app.Dialog;
 import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
+import com.rey.material.widget.EditText;
 import com.rey.material.widget.Slider;
 
 
@@ -41,16 +42,42 @@ public class ThemeActivity extends ActionBarActivity {
     }
 
     public void setTitle(View v) {
-        Utils.putPrefValue(getApplicationContext(), Constant.TITLE_NOTI, "HM");
+        View inflate = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog, null);
+        final EditText edt_title = (EditText) inflate.findViewById(R.id.edt_title);
+        final EditText edt_msg = (EditText) inflate.findViewById(R.id.edt_msg);
+        Dialog.Builder builder = new SimpleDialog.Builder() {
 
+            @Override
+            protected Dialog onBuild(Context context, int styleId) {
+                Dialog dialog = super.onBuild(context, styleId);
+                dialog.layoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                return dialog;
+            }
+
+            @Override
+            public void onPositiveActionClicked(DialogFragment fragment) {
+                Utils.putPrefValue(getApplicationContext(), Constant.TITLE_NOTI, edt_title.getText().toString());
+                Utils.putPrefValue(getApplicationContext(), Constant.MSG_NOTI, edt_msg.getText().toString());
+                super.onPositiveActionClicked(fragment);
+
+            }
+
+            @Override
+            public void onNegativeActionClicked(DialogFragment fragment) {
+                super.onNegativeActionClicked(fragment);
+            }
+        };
+
+        builder.title("Notification")
+                .positiveAction("OK")
+                .negativeAction("CANCEL")
+                .contentView(inflate);
+        DialogFragment fragment = DialogFragment.newInstance(builder);
+        fragment.show(getSupportFragmentManager(), null);
     }
 
     public void setMsg(View v) {
         Utils.putPrefValue(getApplicationContext(), Constant.MSG_NOTI, "Hello Vietnam");
-    }
-
-    public void setIconId(View v) {
-        Utils.putPrefValue(getApplicationContext(), Constant.ICON_ID_NOTI, R.drawable.ic_cafe);
     }
 
     public void changeIcon(View v) {

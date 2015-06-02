@@ -80,7 +80,7 @@ public class OneTouchOverlayView extends OverlayView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             icon.setImageAlpha(dp);
         else
-            icon.setAlpha(dp);
+            icon.setAlpha(dp / 255);
         icon.setImageResource(resId);
         /*icon.setImageResource(R.drawable.triangle);
         icon.setRotation(90);
@@ -90,6 +90,7 @@ public class OneTouchOverlayView extends OverlayView {
 
     @Override
     protected void refreshViews() {
+        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).updateViewLayout(this, layoutParams);
     }
 
     @Override
@@ -97,15 +98,6 @@ public class OneTouchOverlayView extends OverlayView {
         if (System.currentTimeMillis() - timeTouchDown > 150) {
             Log.e("hm", "DRAGGGGGGGGGGGGGGGGGGGGGG");
             changeToEdge();
-            /*float rawX = event.getRawX();
-            float rawY = event.getRawY();
-            int[] location = new int[2];
-            getLocationOnScreen(location);
-            if (rawX < location[0]);
-            int topOnScreen = getTopOnScreen();
-            layoutParams.x = topOnScreen;
-            layoutParams.y = leftOnScreen;
-            refreshLayout();*/
         } else {
             Log.e("hm", "CLICKED");
             executeOneTouch();
@@ -116,8 +108,9 @@ public class OneTouchOverlayView extends OverlayView {
     protected void onTouchEvent_Move(MotionEvent event) {
         layoutParams.x = initialX + (int) (event.getRawX() - initialTouchX);
         layoutParams.y = initialY + (int) (event.getRawY() - initialTouchY);
-        refreshLayout();
+        refreshViews();
     }
+
 
     @Override
     protected void onTouchEvent_Press(MotionEvent event) {
@@ -130,13 +123,14 @@ public class OneTouchOverlayView extends OverlayView {
 
     @Override
     protected void show() {
-        Utils.putPrefValue(getService(), Constant.MSG_NOTI, "Click here to setting");
-        getService().moveToForeground(1, !showNotificationHidden());
+        //Utils.putPrefValue(getService(), Constant.MSG_NOTI, "Click here to setting");
+        //getService().moveToForeground(1, !showNotificationHidden());
         load();
     }
 
     @Override
     public boolean onTouchEvent_LongPress() {
+        Applog.e("longggggggggg");
         Utils.putPrefValue(getService(), Constant.MSG_NOTI, getContext().getString(R.string.show_again));
         getService().moveToForeground(1, true);
         unload();
@@ -146,7 +140,7 @@ public class OneTouchOverlayView extends OverlayView {
 
     public void changeIcon(int resourceId) {
         icon.setImageResource(resourceId);
-        Utils.putPrefValue(getContext(), Constant.ICON_ID_NOTI, resourceId);
+        Utils.putPrefValue(getContext(), Constant.ICON_ID, resourceId);
     }
 
     public void setActionType(int actionType) {
@@ -166,13 +160,13 @@ public class OneTouchOverlayView extends OverlayView {
                     if (functionKey.hasFlashDevice(context)) {
                         functionKey.turnOnFlashlight(previewFlashlight);
                     } else {
-                        Toast.makeText(context, "Dont have flash", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Phone does not support flash light", Toast.LENGTH_SHORT).show();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("hm", "flash error");
                 }
-
+                break;
             default:
                 break;
 
@@ -199,20 +193,15 @@ public class OneTouchOverlayView extends OverlayView {
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        int height = size.y;
         int[] location = new int[2];
         this.getLocationOnScreen(location);
         int left = getLeftOnScreen();
-        int top = getTopOnScreen();
-        Applog.e("Top: " + top + " left: " + left);
         if (left < width / 2) {
-            layoutParams.x = 0;//left
-            layoutParams.y = top;//top
-            refreshLayout();
+            layoutParams.x = -100;//left
+            refreshViews();
         } else {
             layoutParams.x = width;
-            layoutParams.y = top;
-            refreshLayout();
+            refreshViews();
         }
     }
 }

@@ -25,10 +25,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
-import com.m2team.onetouch.Constant;
-import com.m2team.onetouch.R;
-import com.m2team.onetouch.Utils;
-
 public abstract class OverlayView extends RelativeLayout {
 
     protected WindowManager.LayoutParams layoutParams;
@@ -199,7 +195,7 @@ public abstract class OverlayView extends RelativeLayout {
     @Override
     public void setVisibility(int visibility) {
         //if (visibility == View.VISIBLE) {
-        Utils.putPrefValue(getContext(), Constant.MSG_NOTI, getContext().getString(R.string.show_setting));
+        //Utils.putPrefValue(getContext(), Constant.MSG_NOTI, getContext().getString(R.string.show_setting));
         getService().moveToForeground(notificationId, !showNotificationHidden());
         //}
         /*else {

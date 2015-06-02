@@ -49,6 +49,17 @@
         android:textColor="#FF000000" />
 
     <com.rey.material.widget.Button
+        android:id="@+id/flashlight"
+        style="@style/FlatWaveButtonRippleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:onClick="oneTouch"
+        android:text="Turn on flash light"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#FF000000" />
+
+    <com.rey.material.widget.Button
         android:id="@+id/exit"
         style="@style/FlatWaveButtonRippleStyle"
         android:layout_width="match_parent"
