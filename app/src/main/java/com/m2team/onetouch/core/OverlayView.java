@@ -25,6 +25,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.m2team.onetouch.Applog;
+
 public abstract class OverlayView extends RelativeLayout {
 
     protected WindowManager.LayoutParams layoutParams;
@@ -157,7 +159,11 @@ public abstract class OverlayView extends RelativeLayout {
     }
 
     public void destroy() {
-        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).removeView(this);
+        try {
+            ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).removeView(this);
+        } catch (IllegalArgumentException e) {
+            Applog.e("Do not remain view");
+        }
     }
 
     protected void refreshViews() {
@@ -196,7 +202,7 @@ public abstract class OverlayView extends RelativeLayout {
     public void setVisibility(int visibility) {
         //if (visibility == View.VISIBLE) {
         //Utils.putPrefValue(getContext(), Constant.MSG_NOTI, getContext().getString(R.string.show_setting));
-        getService().moveToForeground(notificationId, !showNotificationHidden());
+        getService().moveToForeground(notificationId, false);
         //}
         /*else {
             getService().moveToBackground(notificationId, !showNotificationHidden());

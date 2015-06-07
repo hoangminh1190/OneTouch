@@ -3,7 +3,8 @@ package com.m2team.onetouch.main;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+
+import com.m2team.onetouch.Applog;
 
 public class OneTouchReceiver extends BroadcastReceiver {
     public OneTouchReceiver() {
@@ -11,7 +12,7 @@ public class OneTouchReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("hm", "onReceive");
+        Applog.d("onReceive");
         OneTouchService.showAgain();
     }
 }

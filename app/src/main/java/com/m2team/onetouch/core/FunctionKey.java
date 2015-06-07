@@ -8,8 +8,11 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * Created by Hoang Minh on 6/1/2015.
@@ -17,7 +20,44 @@ import java.io.IOException;
 public class FunctionKey {
 
     private static Camera mCamera;
+    private static long freeMemory;
     SurfaceHolder mHolder;
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            File f;
+            for (int i = 0; i < children.length; i++) {
+                f = new File(dir, children[i]);
+                boolean success = deleteDir(f);
+                if (!success) {
+                    return false;
+                } else {
+                    freeMemory += f.length();
+                }
+            }
+        }
+
+        return dir.delete();
+    }
+
+    public static void freeSpace(Context context) {
+        PackageManager pm = context.getPackageManager();
+        // Get all methods on the PackageManager
+        Method[] methods = pm.getClass().getDeclaredMethods();
+        for (Method m : methods) {
+            if (m.getName().equals("freeStorage")) {
+                // Found the method I want to use
+                try {
+                    long desiredFreeStorage = Long.MAX_VALUE; // Request for 8GB of free space
+                    m.invoke(pm, desiredFreeStorage, null);
+                } catch (Exception e) {
+                    // Method invocation failed. Could be a permission problem
+                }
+                break;
+            }
+        }
+    }
 
     public boolean hasFlashDevice(Context context) {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
@@ -80,6 +120,22 @@ public class FunctionKey {
         ComponentName recents = new ComponentName("com.android.systemui", "com.android.systemui.recent.RecentsActivity");
         closeRecents.setComponent(recents);
         context.startActivity(closeRecents);
+    }
+
+    public void clearApplicationData(Context context) {
+        freeMemory = 0;
+        File cache = context.getCacheDir();
+        File appDir = new File(cache.getParent());
+        if (appDir.exists()) {
+            String[] children = appDir.list();
+            for (String s : children) {
+                if (!s.equals("lib")) {
+                    deleteDir(new File(appDir, s));
+                    Log.i("hm", "File /data/data/APP_PACKAGE/" + s + " DELETED");
+                }
+            }
+        }
+        Toast.makeText(context, "Free memory: " + freeMemory / 1024 / 1024 + " MB", Toast.LENGTH_SHORT).show();
     }
 
 }

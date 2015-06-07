@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class Applog {
 
-    public static String TAG = "wic";
+    public static String TAG = "OneTouchKey";
 
     //public static boolean DEBUG = Log.isLoggable(TAG, Log.VERBOSE);
     public static boolean DEBUG = false;

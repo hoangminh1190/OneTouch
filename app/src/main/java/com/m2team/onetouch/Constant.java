@@ -8,7 +8,8 @@ public class Constant {
     public static final String TITLE_NOTI = "TITLE_NOTI";
     public static final String MSG_NOTI = "MSG_NOTI";
     public static final String MSG_HIDDEN_NOTI = "MSG_HIDDEN_NOTI";
-    public static String SIZE = "size";
-    public static String OPACITY = "opacity";
-    public static String ICON_ID = "icon_id";
+    public static final String SIZE = "size";
+    public static final String OPACITY = "opacity";
+    public static final String ICON_ID = "icon_id";
+    public static final String ACTION_TYPE = "action_type";
 }

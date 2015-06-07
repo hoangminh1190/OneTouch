@@ -7,11 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.m2team.onetouch.R;
+
 /**
  * Created by Hoang Minh on 5/30/2015.
  */
 public class LockPhoneFunction {
-    static final int RESULT_ENABLE = 1;
     private static DevicePolicyManager deviceManger;
     private static ActivityManager activityManager;
     private static ComponentName compName;
@@ -34,7 +35,7 @@ public class LockPhoneFunction {
         if (active) {
             deviceManger.lockNow();
         } else {
-            Toast.makeText(mContext, "You must enable admin policy", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "You must enable device administrator permission for " + mContext.getString(R.string.app_name), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -44,7 +45,7 @@ public class LockPhoneFunction {
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                 compName);
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                "Additional text explaining why this needs to be added.");
+                mContext.getString(R.string.app_name) + " needs permission to lock your device");
         mContext.startActivity(intent);
     }
 
@@ -52,4 +53,7 @@ public class LockPhoneFunction {
         deviceManger.removeActiveAdmin(compName);
     }
 
+    public boolean isDeviceAdminActive() {
+        return deviceManger.isAdminActive(compName);
+    }
 }

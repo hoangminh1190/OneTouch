@@ -1,51 +1,71 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="4">
+    android:background="#E0E0E0"
+    android:orientation="vertical">
 
-    <com.rey.material.widget.Button
+    <com.rey.material.widget.TextView
         android:id="@+id/changeIcon"
         style="@style/FlatButtonRippleStyle"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:onClick="changeIcon"
-        android:text="Change icon"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="15dp"
+        android:text="Icon"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-        android:textColor="#FF000000" />
+        android:textColor="#424242" />
 
-    <com.rey.material.widget.Button
-        android:id="@+id/setTitle"
-        style="@style/FlatButtonRippleStyle"
+    <View
+        android:id="@+id/line_1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:onClick="setTitle"
+        android:layout_height="1dp"
+        android:layout_below="@+id/changeIcon"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#EC407A" />
 
-        android:text="Change title notification"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-        android:textColor="#FF000000" />
-
-    <com.rey.material.widget.Button
-        android:id="@+id/setMsg"
-        style="@style/FlatButtonRippleStyle"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:onClick="setMsg"
-        android:text="Change message notification"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-        android:textColor="#FF000000" />
-
-    <com.rey.material.widget.Button
+    <com.rey.material.widget.TextView
         android:id="@+id/setIconSize"
         style="@style/FlatButtonRippleStyle"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:onClick="setIconSize"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line_1"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="15dp"
         android:text="Size and opacity"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
-        android:textColor="#FF000000" />
-</LinearLayout>
+        android:textColor="#424242" />
+
+    <View
+        android:id="@+id/line_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/setIconSize"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#EC407A" />
+
+    <com.rey.material.widget.TextView
+        android:id="@+id/setTitle"
+        style="@style/FlatButtonRippleStyle"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/line_2"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="15dp"
+        android:text="Notification message"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Button"
+        android:textColor="#424242" />
+
+    <com.startapp.android.publish.banner.bannerstandard.BannerStandard
+        android:id="@+id/startAppBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -3,7 +3,10 @@ package com.m2team.onetouch;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * Created by Administrator on 30/05/2015.
@@ -39,5 +42,13 @@ public class Utils {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float dp = px / (metrics.densityDpi / 160f);
         return Math.round(dp);
+    }
+
+    public static int[] getDimensionScreen(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        Point point = new Point();
+        defaultDisplay.getSize(point);
+        return new int[]{point.x, point.y};
     }
 }

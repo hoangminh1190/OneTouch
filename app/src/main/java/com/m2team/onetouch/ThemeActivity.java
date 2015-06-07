@@ -5,8 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,30 +19,41 @@ import com.rey.material.app.DialogFragment;
 import com.rey.material.app.SimpleDialog;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.Slider;
+import com.rey.material.widget.TextView;
+import com.startapp.android.publish.StartAppAd;
 
 
-public class ThemeActivity extends ActionBarActivity {
+public class ThemeActivity extends ActionBarActivity implements View.OnClickListener, Slider.OnPositionChangeListener {
 
     private static CustomGridAdapter adapter;
     int iconId;
+    ImageView previewIcon;
+    TextView tvIcon, tvSize, tvNotification;
+    private StartAppAd startAppAd = new StartAppAd(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_themes);
+        tvIcon = (TextView) findViewById(R.id.changeIcon);
+        tvSize = (TextView) findViewById(R.id.setIconSize);
+        tvNotification = (TextView) findViewById(R.id.setTitle);
+        tvIcon.setOnClickListener(this);
+        tvSize.setOnClickListener(this);
+        tvNotification.setOnClickListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    public void setTitle(View v) {
-        View inflate = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog, null);
+    public void setTitle() {
+        final Context context = getApplicationContext();
+        View inflate = LayoutInflater.from(context).inflate(R.layout.layout_dialog_notification, null);
         final EditText edt_title = (EditText) inflate.findViewById(R.id.edt_title);
         final EditText edt_msg = (EditText) inflate.findViewById(R.id.edt_msg);
+        final EditText edt_hidden_msg = (EditText) inflate.findViewById(R.id.edt_msg_hidden);
+
+        edt_title.setText(Utils.getPrefString(context, Constant.TITLE_NOTI));
+        edt_msg.setText(Utils.getPrefString(context, Constant.MSG_NOTI));
+        edt_hidden_msg.setText(Utils.getPrefString(context, Constant.MSG_HIDDEN_NOTI));
+
         Dialog.Builder builder = new SimpleDialog.Builder() {
 
             @Override
@@ -56,8 +65,9 @@ public class ThemeActivity extends ActionBarActivity {
 
             @Override
             public void onPositiveActionClicked(DialogFragment fragment) {
-                Utils.putPrefValue(getApplicationContext(), Constant.TITLE_NOTI, edt_title.getText().toString());
-                Utils.putPrefValue(getApplicationContext(), Constant.MSG_NOTI, edt_msg.getText().toString());
+                Utils.putPrefValue(context, Constant.TITLE_NOTI, edt_title.getText().toString());
+                Utils.putPrefValue(context, Constant.MSG_NOTI, edt_msg.getText().toString());
+                Utils.putPrefValue(context, Constant.MSG_HIDDEN_NOTI, edt_hidden_msg.getText().toString());
                 super.onPositiveActionClicked(fragment);
 
             }
@@ -76,12 +86,7 @@ public class ThemeActivity extends ActionBarActivity {
         fragment.show(getSupportFragmentManager(), null);
     }
 
-    public void setMsg(View v) {
-        Utils.putPrefValue(getApplicationContext(), Constant.MSG_NOTI, "Hello Vietnam");
-    }
-
-    public void changeIcon(View v) {
-
+    public void changeIcon() {
         View inflate = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_icon, null);
         GridView gridViewIcon = (GridView) inflate.findViewById(R.id.grid_icon);
         if (adapter == null)
@@ -96,6 +101,7 @@ public class ThemeActivity extends ActionBarActivity {
                 adapter.visibleIconAdd(view);
             }
         });
+
         Dialog.Builder builder = new SimpleDialog.Builder() {
 
             @Override
@@ -107,8 +113,6 @@ public class ThemeActivity extends ActionBarActivity {
 
             @Override
             public void onPositiveActionClicked(DialogFragment fragment) {
-                OneTouchService.changeIcon(iconId);
-                Utils.putPrefValue(getApplicationContext(), Constant.ICON_ID, iconId);
                 super.onPositiveActionClicked(fragment);
 
             }
@@ -122,42 +126,37 @@ public class ThemeActivity extends ActionBarActivity {
         fragment.show(getSupportFragmentManager(), null);
     }
 
-    public void setIconSize(View v) {
+    public void setIconSize() {
         View inflate = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_dialog_size, null);
-        final ImageView previewIcon = (ImageView) inflate.findViewById(R.id.preview_icon);
-        int iconId = Utils.getPrefInt(getApplicationContext(), Constant.ICON_ID);
-        if (iconId == 0) iconId = R.drawable.ic_star;
-        previewIcon.setImageResource(iconId);
+        previewIcon = (ImageView) inflate.findViewById(R.id.preview_icon);
         final Slider slSize = (Slider) inflate.findViewById(R.id.slider_size);
         final Slider slider_opacity = (Slider) inflate.findViewById(R.id.slider_opacity);
-        int size = Utils.getPrefInt(getApplicationContext(), Constant.SIZE);
-        if (size == 0) size = 64;
-        int opacity = Utils.getPrefInt(getApplicationContext(), Constant.OPACITY);
-        if (opacity == 0) opacity = 255;
-        slSize.setValue(size, false);
-        slider_opacity.setValue(opacity, false);
-        slSize.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
+        int iconId = Utils.getPrefInt(getApplicationContext(), Constant.ICON_ID);
+        if (iconId == 0) iconId = R.drawable.ic_star;
 
-            @Override
-            public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
-                OneTouchService.changeIconSize(newValue, 1);
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(100, 100);
-                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                layoutParams.width = newValue;
-                layoutParams.height = newValue;
-                previewIcon.setLayoutParams(layoutParams);
-            }
-        });
-        slider_opacity.setOnPositionChangeListener(new Slider.OnPositionChangeListener() {
-            @Override
-            public void onPositionChanged(Slider view, boolean fromUser, float oldPos, float newPos, int oldValue, int newValue) {
-                OneTouchService.changeIconSize(newValue, 2);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    previewIcon.setImageAlpha(newValue);
-                else
-                    previewIcon.setAlpha(newValue / 255);
-            }
-        });
+        int size = Utils.getPrefInt(getApplicationContext(), Constant.SIZE);
+        if (size == 0) {
+            int[] dimensionScreen = Utils.getDimensionScreen(this);
+            size = dimensionScreen[1];
+            Utils.putPrefValue(getApplicationContext(), Constant.SIZE, size);
+        }
+
+
+        int opacity = Utils.getPrefInt(getApplicationContext(), Constant.OPACITY);
+        if (opacity == 0) {
+            opacity = 255;
+            Utils.putPrefValue(getApplicationContext(), Constant.OPACITY, opacity);
+        }
+
+        previewIcon.setLayoutParams(refreshImageLayout(size));
+        previewIcon.setImageResource(iconId);
+
+        slSize.setValue(size, true);
+        slSize.setOnPositionChangeListener(this);
+
+        slider_opacity.setValue(opacity, true);
+        slider_opacity.setOnPositionChangeListener(this);
+
         Dialog.Builder builder = new SimpleDialog.Builder() {
 
             @Override
@@ -187,25 +186,68 @@ public class ThemeActivity extends ActionBarActivity {
         fragment.show(getSupportFragmentManager(), null);
     }
 
-    public void exit(View v) {
-        OneTouchService.stop();
-        finish();
+    private RelativeLayout.LayoutParams refreshImageLayout(int newValue) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(100, 100);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        layoutParams.width = newValue;
+        layoutParams.height = newValue;
+        return layoutParams;
     }
-
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.changeIcon:
+                changeIcon();
+                break;
+            case R.id.setTitle:
+                setTitle();
+                break;
+            case R.id.setIconSize:
+                setIconSize();
+                break;
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onPositionChanged(Slider view, boolean from, float oldPos, float newPos, int oldValue, int newValue) {
+        switch (view.getId()) {
+            case R.id.slider_size:
+                OneTouchService.changeIconSize(newValue, 1);
+                previewIcon.setLayoutParams(refreshImageLayout(newValue));
+                break;
+            case R.id.slider_opacity:
+                OneTouchService.changeIconSize(newValue, 2);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                    previewIcon.setImageAlpha(newValue);
+                else
+                    previewIcon.setAlpha(newValue / 255);
+                break;
+        }
+    }
+
+    /**
+     * Part of the activity's life cycle, StartAppAd should be integrated here.
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        startAppAd.onResume();
+    }
+
+    /**
+     * Part of the activity's life cycle, StartAppAd should be integrated here
+     * for the home button exit ad integration.
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        startAppAd.onPause();
+    }
+
+    /*@Override
+    public void onBackPressed() {
+        startAppAd.onBackPressed();
+        super.onBackPressed();
+    }*/
 }

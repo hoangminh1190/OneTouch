@@ -1,26 +1,13 @@
 package com.m2team.onetouch.main;
 
-/*
-Copyright 2011 jawsware international
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
-import android.util.Log;
+import android.support.v4.view.GestureDetectorCompat;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -41,7 +28,7 @@ import com.m2team.onetouch.core.OverlayView;
 import java.io.IOException;
 
 
-public class OneTouchOverlayView extends OverlayView {
+public class OneTouchOverlayView extends OverlayView implements GestureDetector.OnGestureListener {
 
     SurfaceView previewFlashlight;
     private ImageView icon;
@@ -51,13 +38,23 @@ public class OneTouchOverlayView extends OverlayView {
     private float initialTouchY;
     private int actionType;
     private long timeTouchDown;
-    private int resId;
+    private int width = 0, height = 0;
+    private boolean isLongClick = false;
+    private GestureDetectorCompat mDetector;
 
     public OneTouchOverlayView(OverlayService service) {
         super(service, R.layout.overlay, 1);
         layoutParams.x = 0;
         layoutParams.y = 100;
         actionType = -1;
+        mDetector = new GestureDetectorCompat(getContext(), this);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.mDetector.onTouchEvent(event);
+        // Be sure to call the superclass implementation
+        return super.onTouchEvent(event);
     }
 
     public int getLayoutGravity() {
@@ -67,25 +64,22 @@ public class OneTouchOverlayView extends OverlayView {
     @Override
     protected void onInflateView() {
         icon = (ImageView) this.findViewById(R.id.icon);
-        resId = Utils.getPrefInt(getContext(), Constant.ICON_ID);
-        if (resId == 0) {
-            resId = R.drawable.ic_star;
-            Utils.putPrefValue(getContext(), Constant.ICON_ID, resId);
-        }
+        previewFlashlight = (SurfaceView) findViewById(R.id.preview_flashlight);
+
+        //icon
+        icon.setImageResource(Utils.getPrefInt(getContext(), Constant.ICON_ID));
+
+        //size of icon
         int dp = Utils.getPrefInt(getContext(), Constant.SIZE);
-        if (dp == 0) dp = 128;
         icon.setLayoutParams(new RelativeLayout.LayoutParams(dp, dp));
+
+        //opacity
         dp = Utils.getPrefInt(getContext(), Constant.OPACITY);
-        if (dp == 0) dp = 100;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             icon.setImageAlpha(dp);
         else
             icon.setAlpha(dp / 255);
-        icon.setImageResource(resId);
-        /*icon.setImageResource(R.drawable.triangle);
-        icon.setRotation(90);
-*/
-        previewFlashlight = (SurfaceView) findViewById(R.id.preview_flashlight);
+
     }
 
     @Override
@@ -93,14 +87,22 @@ public class OneTouchOverlayView extends OverlayView {
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).updateViewLayout(this, layoutParams);
     }
 
-    @Override
+    /*@Override
     protected void onTouchEvent_Up(MotionEvent event) {
-        if (System.currentTimeMillis() - timeTouchDown > 150) {
-            Log.e("hm", "DRAGGGGGGGGGGGGGGGGGGGGGG");
-            changeToEdge();
-        } else {
-            Log.e("hm", "CLICKED");
+        long currentTime = System.currentTimeMillis();
+        Applog.v("Up" + (currentTime - timeTouchDown));
+        if (currentTime - timeTouchDown < 150) {
+            Applog.v("CLICKED");
             executeOneTouch();
+            isLongClick = false;
+        } else if (isLongClick && currentTime - timeTouchDown < 830) {
+            Applog.v("LONG");
+            getService().moveToForeground(1, true);
+            unload();
+        } else {
+            changeToEdge();
+            Applog.v("DRAG");
+            isLongClick = false;
         }
     }
 
@@ -109,11 +111,19 @@ public class OneTouchOverlayView extends OverlayView {
         layoutParams.x = initialX + (int) (event.getRawX() - initialTouchX);
         layoutParams.y = initialY + (int) (event.getRawY() - initialTouchY);
         refreshViews();
+        *//*Applog.e("initX: " + initialX);
+        Applog.e("event.getRawX: " + event.getRawX());
+        Applog.e("initialTouchX: " + initialTouchX);
+        Applog.e("layoutParams.x: " + layoutParams.x);
+        Applog.e("initY: " + initialY);
+        Applog.e("event.getRawY: " + event.getRawY());
+        Applog.e("initialTouchY: " + initialTouchY);
+        Applog.e("layoutParams.y: " + layoutParams.y);*//*
     }
-
 
     @Override
     protected void onTouchEvent_Press(MotionEvent event) {
+        Applog.v("Down");
         initialX = layoutParams.x;
         initialY = layoutParams.y;
         initialTouchX = event.getRawX();
@@ -122,26 +132,19 @@ public class OneTouchOverlayView extends OverlayView {
     }
 
     @Override
-    protected void show() {
-        Utils.putPrefValue(getService(), Constant.MSG_NOTI, Utils.getPrefString(getContext(), Constant.MSG_HIDDEN_NOTI));
-        getService().moveToForeground(1, !showNotificationHidden());
-        load();
-    }
+    public boolean onTouchEvent_LongPress() {
+        isLongClick = true;
+        return true;
+    }*/
 
     @Override
-    public boolean onTouchEvent_LongPress() {
-        Applog.e("longggggggggg");
-        Utils.putPrefValue(getService(), Constant.MSG_HIDDEN_NOTI, Utils.getPrefString(getContext(), Constant.MSG_NOTI));
-        Utils.putPrefValue(getService(), Constant.MSG_NOTI, getContext().getString(R.string.show_again));
-        getService().moveToForeground(1, true);
-        unload();
-
-        return true;
+    protected void show() {
+        getService().moveToForeground(1, false);
+        load();
     }
 
     public void changeIcon(int resourceId) {
         icon.setImageResource(resourceId);
-        Utils.putPrefValue(getContext(), Constant.ICON_ID, resourceId);
     }
 
     public void setActionType(int actionType) {
@@ -155,7 +158,15 @@ public class OneTouchOverlayView extends OverlayView {
                 LockPhoneFunction function = new LockPhoneFunction(getContext());
                 function.lock();
                 break;
+
             case 1:
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                getContext().startActivity(intent);
+                break;
+
+            case 2:
                 FunctionKey functionKey = new FunctionKey();
                 try {
                     if (functionKey.hasFlashDevice(context)) {
@@ -165,7 +176,7 @@ public class OneTouchOverlayView extends OverlayView {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e("hm", "flash error");
+                    Applog.e("flash error");
                 }
                 break;
             default:
@@ -187,22 +198,83 @@ public class OneTouchOverlayView extends OverlayView {
         }
     }
 
-
     public void changeToEdge() {
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
+        if (width == 0 && height == 0) {
+            WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
+        }
         int[] location = new int[2];
         this.getLocationOnScreen(location);
         int left = getLeftOnScreen();
+        int top = getTopOnScreen();
+        Applog.e("L: " + left + " T: " + top + " W: " + width + " H: " + height);
         if (left < width / 2) {
-            layoutParams.x = -100;//left
-            refreshViews();
+            layoutParams.x = 0;//left
+           /* if (top > (0.75 * height)) {
+                layoutParams.y = height;
+            } else if (top < (0.25 * height)) {
+                layoutParams.y = 100;
+            } else {
+                layoutParams.x = 0;//left
+            }*/
         } else {
             layoutParams.x = width;
-            refreshViews();
+            /*if (top > (0.75 * height)) {
+                layoutParams.y = height;
+            } else if (top < (0.25 * height)) {
+                layoutParams.y = 100;
+            } else {
+                layoutParams.x = width;
+            }*/
         }
+        refreshViews();
+    }
+
+    @Override
+    public boolean onDown(MotionEvent event) {
+        initialX = layoutParams.x;
+        initialY = layoutParams.y;
+        initialTouchX = event.getRawX();
+        initialTouchY = event.getRawY();
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        Applog.e("onShowPress");
+        changeToEdge();
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        Applog.e("CLICKED");
+        executeOneTouch();
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent event, float distanceX, float distanceY) {
+        layoutParams.x = initialX + (int) (event.getRawX() - initialTouchX);
+        layoutParams.y = initialY + (int) (event.getRawY() - initialTouchY);
+        refreshViews();
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        Applog.e("LONG");
+        getService().moveToForeground(1, true);
+        unload();
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Applog.e("DRAG");
+        changeToEdge();
+        return false;
     }
 }

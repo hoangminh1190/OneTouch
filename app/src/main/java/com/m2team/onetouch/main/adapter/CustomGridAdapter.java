@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.m2team.onetouch.Constant;
 import com.m2team.onetouch.R;
+import com.m2team.onetouch.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,10 @@ public class CustomGridAdapter extends BaseAdapter {
         }
         holder.image.setBackgroundResource(getItem(position));
         holder.iconAdd.setVisibility(View.INVISIBLE);
+        int currentIconId = Utils.getPrefInt(context, Constant.ICON_ID);
+        if (currentIconId == getItemId(position)) {
+            holder.iconAdd.setVisibility(View.VISIBLE);
+        }
         view.setTag(holder);
         holders.add(holder);
         return view;

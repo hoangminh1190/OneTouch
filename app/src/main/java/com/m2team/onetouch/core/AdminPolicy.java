@@ -17,7 +17,7 @@ public class AdminPolicy extends DeviceAdminReceiver {
 
     @Override
     public void onEnabled(Context context, Intent intent) {
-        showToast(context, "Sample Device Admin: enabled");
+        showToast(context, "Grant permission device administrators success");
     }
 
     @Override
@@ -27,7 +27,6 @@ public class AdminPolicy extends DeviceAdminReceiver {
 
     @Override
     public void onDisabled(Context context, Intent intent) {
-        showToast(context, "Sample Device Admin: disabled");
     }
 
     @Override

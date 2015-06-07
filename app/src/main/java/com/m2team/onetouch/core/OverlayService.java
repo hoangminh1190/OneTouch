@@ -20,42 +20,37 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.IBinder;
-import android.text.TextUtils;
 
+import com.m2team.onetouch.Applog;
 import com.m2team.onetouch.Constant;
-import com.m2team.onetouch.R;
 import com.m2team.onetouch.Utils;
 
 
 public class OverlayService extends android.app.Service {
 
     protected boolean foreground = false;
-    protected boolean cancelNotification = false;
     protected int id = 0;
 
-    protected Notification foregroundNotification(int notificationId, int iconId, String title, String msg) {
+    protected Notification foregroundNotification(int notificationId, int iconId, String title, String msg, boolean isHidden) {
         return null;
     }
 
-    public void moveToForeground(int id, boolean cancelNotification) {
+    public void moveToForeground(int id, boolean isHidden) {
         String title = Utils.getPrefString(getApplicationContext(), Constant.TITLE_NOTI);
-        String msg = Utils.getPrefString(getApplicationContext(), Constant.MSG_NOTI);
+        String msg = isHidden ? Utils.getPrefString(getApplicationContext(), Constant.MSG_HIDDEN_NOTI) : Utils.getPrefString(getApplicationContext(), Constant.MSG_NOTI);
         int iconId = Utils.getPrefInt(getApplicationContext(), Constant.ICON_ID);
-        if (iconId == 0) iconId = R.drawable.ic_star;
-        if (TextUtils.isEmpty(title)) title = "One Touch";
-        if (TextUtils.isEmpty(msg)) msg = getApplicationContext().getString(R.string.show_setting);
-        moveToForeground(id, foregroundNotification(id, iconId, title, msg), cancelNotification);
+        moveToForeground(id, foregroundNotification(id, iconId, title, msg, isHidden));
     }
 
-    public void moveToForeground(int id, Notification notification, boolean cancelNotification) {
+    public void moveToForeground(int id, Notification notification) {
         if (!this.foreground && notification != null) {
             this.foreground = true;
             this.id = id;
-            this.cancelNotification = cancelNotification;
 
             super.startForeground(id, notification);
         } else if (id > 0 && notification != null) {
             this.id = id;
+            Applog.e("notify");
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).notify(id, notification);
         }
     }
