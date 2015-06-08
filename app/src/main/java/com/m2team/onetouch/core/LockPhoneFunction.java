@@ -18,6 +18,7 @@ public class LockPhoneFunction {
     private static ComponentName compName;
     Context mContext;
 
+
     public LockPhoneFunction(Context context) {
         mContext = context;
         if (deviceManger == null)
@@ -36,6 +37,10 @@ public class LockPhoneFunction {
             deviceManger.lockNow();
         } else {
             Toast.makeText(mContext, "You must enable device administrator permission for " + mContext.getString(R.string.app_name), Toast.LENGTH_LONG).show();
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(new ComponentName("com.android.settings", "com.android.settings.DeviceAdminSettings"));
+            mContext.startActivity(intent);
         }
     }
 

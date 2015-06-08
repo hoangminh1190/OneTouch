@@ -28,7 +28,6 @@
         <item name="android:background">@null</item>
         <item name="rd_cornerRadius">4dp</item>
     </style>
-
     <style name="RaiseWaveColorButtonRippleStyle" parent="Material.Drawable.Ripple.Wave.Light">
         <item name="android:background">#424242</item>
         <item name="rd_rippleColor">#33000000</item>
@@ -37,7 +36,6 @@
         <item name="rd_rightPadding">1dp</item>
         <item name="rd_bottomPadding">2dp</item>
     </style>
-
     <style name="SimpleDialogLight" parent="Material.App.Dialog.Simple.Light">
         <item name="di_inAnimation">@anim/anim_scale_in</item>
         <item name="di_outAnimation">@anim/anim_scale_out</item>

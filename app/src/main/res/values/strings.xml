@@ -3,6 +3,7 @@
     <string name="sample_device_admin_description">Allow application to lock your device</string>
     <string name="show_again">Click here to show me again</string>
     <string name="show_setting">Click here to setting</string>
-    <string name="about">About</string>
     <string name="main_title">ONE function - ONE touch</string>
+    <string name="warning_msg_noti">* You need restart service to apply new message</string>
+    <string name="about">About</string>
 </resources>

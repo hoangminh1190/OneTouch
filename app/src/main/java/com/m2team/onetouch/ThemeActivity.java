@@ -132,7 +132,7 @@ public class ThemeActivity extends ActionBarActivity implements View.OnClickList
         final Slider slSize = (Slider) inflate.findViewById(R.id.slider_size);
         final Slider slider_opacity = (Slider) inflate.findViewById(R.id.slider_opacity);
         int iconId = Utils.getPrefInt(getApplicationContext(), Constant.ICON_ID);
-        if (iconId == 0) iconId = R.drawable.ic_star;
+        if (iconId == 0) iconId = R.drawable.ic_launcher;
 
         int size = Utils.getPrefInt(getApplicationContext(), Constant.SIZE);
         if (size == 0) {

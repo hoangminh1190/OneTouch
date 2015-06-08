@@ -37,9 +37,7 @@ public class OneTouchOverlayView extends OverlayView implements GestureDetector.
     private float initialTouchX;
     private float initialTouchY;
     private int actionType;
-    private long timeTouchDown;
     private int width = 0, height = 0;
-    private boolean isLongClick = false;
     private GestureDetectorCompat mDetector;
 
     public OneTouchOverlayView(OverlayService service) {
@@ -86,56 +84,6 @@ public class OneTouchOverlayView extends OverlayView implements GestureDetector.
     protected void refreshViews() {
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).updateViewLayout(this, layoutParams);
     }
-
-    /*@Override
-    protected void onTouchEvent_Up(MotionEvent event) {
-        long currentTime = System.currentTimeMillis();
-        Applog.v("Up" + (currentTime - timeTouchDown));
-        if (currentTime - timeTouchDown < 150) {
-            Applog.v("CLICKED");
-            executeOneTouch();
-            isLongClick = false;
-        } else if (isLongClick && currentTime - timeTouchDown < 830) {
-            Applog.v("LONG");
-            getService().moveToForeground(1, true);
-            unload();
-        } else {
-            changeToEdge();
-            Applog.v("DRAG");
-            isLongClick = false;
-        }
-    }
-
-    @Override
-    protected void onTouchEvent_Move(MotionEvent event) {
-        layoutParams.x = initialX + (int) (event.getRawX() - initialTouchX);
-        layoutParams.y = initialY + (int) (event.getRawY() - initialTouchY);
-        refreshViews();
-        *//*Applog.e("initX: " + initialX);
-        Applog.e("event.getRawX: " + event.getRawX());
-        Applog.e("initialTouchX: " + initialTouchX);
-        Applog.e("layoutParams.x: " + layoutParams.x);
-        Applog.e("initY: " + initialY);
-        Applog.e("event.getRawY: " + event.getRawY());
-        Applog.e("initialTouchY: " + initialTouchY);
-        Applog.e("layoutParams.y: " + layoutParams.y);*//*
-    }
-
-    @Override
-    protected void onTouchEvent_Press(MotionEvent event) {
-        Applog.v("Down");
-        initialX = layoutParams.x;
-        initialY = layoutParams.y;
-        initialTouchX = event.getRawX();
-        initialTouchY = event.getRawY();
-        timeTouchDown = System.currentTimeMillis();
-    }
-
-    @Override
-    public boolean onTouchEvent_LongPress() {
-        isLongClick = true;
-        return true;
-    }*/
 
     @Override
     protected void show() {
@@ -198,7 +146,7 @@ public class OneTouchOverlayView extends OverlayView implements GestureDetector.
         }
     }
 
-    public void changeToEdge() {
+    public void changeToEdge(MotionEvent e) {
         if (width == 0 && height == 0) {
             WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
@@ -209,9 +157,9 @@ public class OneTouchOverlayView extends OverlayView implements GestureDetector.
         }
         int[] location = new int[2];
         this.getLocationOnScreen(location);
-        int left = getLeftOnScreen();
-        int top = getTopOnScreen();
-        Applog.e("L: " + left + " T: " + top + " W: " + width + " H: " + height);
+        float left = e.getRawX();
+        float top = e.getRawY();
+        Applog.v("L: " + left + " T: " + top + " W: " + width + " H: " + height);
         if (left < width / 2) {
             layoutParams.x = 0;//left
            /* if (top > (0.75 * height)) {
@@ -245,13 +193,13 @@ public class OneTouchOverlayView extends OverlayView implements GestureDetector.
 
     @Override
     public void onShowPress(MotionEvent e) {
-        Applog.e("onShowPress");
-        changeToEdge();
+        Applog.v("onShowPress");
+        //changeToEdge(e);
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        Applog.e("CLICKED");
+        Applog.v("CLICKED");
         executeOneTouch();
         return false;
     }
@@ -266,15 +214,15 @@ public class OneTouchOverlayView extends OverlayView implements GestureDetector.
 
     @Override
     public void onLongPress(MotionEvent e) {
-        Applog.e("LONG");
+        Applog.v("LONG");
         getService().moveToForeground(1, true);
         unload();
     }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        Applog.e("DRAG");
-        changeToEdge();
+        Applog.v("DRAG");
+        changeToEdge(e2);
         return false;
     }
 }
