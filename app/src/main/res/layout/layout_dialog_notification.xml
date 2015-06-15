@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.rey.material.widget.EditText
+        android:id="@+id/edt_title"
+        style="@style/Material.Widget.EditText.Light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Title"
+        android:inputType="textFilter"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="#FF000000"
+        app:et_dividerErrorColor="#FFFF0000"
+        app:et_helper="This title will display in the notification"
+        app:et_inputId="@+id/textfield_et_helper_input"
+        app:et_labelTextColor="@drawable/color_label"
+        app:et_supportMode="helper"
+        app:et_supportTextErrorColor="#FFFF0000" />
+
+    <com.rey.material.widget.EditText
+        android:id="@+id/edt_msg"
+        style="@style/Material.Widget.EditText.Light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Message"
+        android:inputType="text"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="#FF000000"
+        app:et_dividerErrorColor="#FFFF0000"
+        app:et_helper="Display this below title in the notification"
+        app:et_inputId="@+id/textfield_et_helper_input"
+        app:et_labelTextColor="@drawable/color_label"
+        app:et_supportMode="helper"
+        app:et_supportTextErrorColor="#FFFF0000" />
+
+    <com.rey.material.widget.EditText
+        android:id="@+id/edt_msg_hidden"
+        style="@style/Material.Widget.EditText.Light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Hidden Message"
+        android:inputType="text"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="#FF000000"
+        app:et_dividerErrorColor="#FFFF0000"
+        app:et_helper="Display this when icon hidden on screen"
+        app:et_inputId="@+id/textfield_et_helper_input"
+        app:et_labelTextColor="@drawable/color_label"
+        app:et_supportMode="helper"
+        app:et_supportTextErrorColor="#FFFF0000" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textColor="#FFFF0000"
+        android:text="@string/warning_msg_noti"
+        />
+</LinearLayout>

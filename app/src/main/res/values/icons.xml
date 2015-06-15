@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="arr_icons">
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_3</item>
+        <item>@drawable/ic_17</item>
+
+        <item>@drawable/ic_4</item>
+        <item>@drawable/ic_5</item>
+        <item>@drawable/ic_6</item>
+        <item>@drawable/ic_7</item>
+        <item>@drawable/ic_8</item>
+        <item>@drawable/ic_9</item>
+        <item>@drawable/ic_10</item>
+        <item>@drawable/ic_12</item>
+        <item>@drawable/ic_13</item>
+        <item>@drawable/ic_14</item>
+        <item>@drawable/ic_15</item>
+        <item>@drawable/ic_16</item>
+
+
+        <item>@drawable/ic_20</item>
+        <item>@drawable/ic_21</item>
+        <item>@drawable/ic_22</item>
+        <item>@drawable/ic_23</item>
+        <item>@drawable/ic_24</item>
+        <item>@drawable/ic_25</item>
+        <item>@drawable/ic_26</item>
+        <item>@drawable/ic_28</item>
+        <item>@drawable/ic_27</item>
+
+        <item>@drawable/ic_40</item>
+        <item>@drawable/ic_41</item>
+        <item>@drawable/ic_42</item>
+        <item>@drawable/ic_43</item>
+        <item>@drawable/ic_44</item>
+        <item>@drawable/ic_45</item>
+        <item>@drawable/ic_46</item>
+        <item>@drawable/ic_47</item>
+        <item>@drawable/ic_48</item>
+        <item>@drawable/ic_49</item>
+        <item>@drawable/ic_50</item>
+        <item>@drawable/ic_51</item>
+        <item>@drawable/ic_52</item>
+        <item>@drawable/ic_53</item>
+        <item>@drawable/ic_54</item>
+
+
+        <item>@drawable/ic_29</item>
+        <item>@drawable/ic_30</item>
+        <item>@drawable/ic_31</item>
+        <item>@drawable/ic_32</item>
+        <item>@drawable/ic_18</item>
+        <item>@drawable/ic_19</item>
+        <item>@drawable/ic_33</item>
+        <item>@drawable/ic_34</item>
+    </array>
+</resources>
